@@ -64,22 +64,6 @@ jobs:
           echo "    )" >> Package.swift
           echo "  ]" >> Package.swift
           echo ")" >> Package.swift
-          
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: LibXray Release ${{ github.event.inputs.version }}
-          commit_user_name: Ebrahim
-          commit_user_email: ebrahimtahernejad@gmail.com
-          tagging_message: ${{ github.event.inputs.version }}
-          file_pattern: 'Package.swift'
-          
-      - name: Upload Release
-        uses: softprops/action-gh-release@v1
-        with:
-          draft: false
-          tag_name: ${{ github.event.inputs.version }}
-          body: 'Compiled from source tag: ${{ github.event.inputs.tag }}'
-          files: xray/LibXray.xcframework.zip
 
       - name: Generate Podspec
         run: |
@@ -100,6 +84,22 @@ jobs:
 
       - name: Validate Podspec
         run: pod spec lint LibXray.podspec --allow-warnings --verbose
+          
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: LibXray Release ${{ github.event.inputs.version }}
+          commit_user_name: Ebrahim
+          commit_user_email: ebrahimtahernejad@gmail.com
+          tagging_message: ${{ github.event.inputs.version }}
+          file_pattern: 'Package.swift'
+          
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          tag_name: ${{ github.event.inputs.version }}
+          body: 'Compiled from source tag: ${{ github.event.inputs.tag }}'
+          files: xray/LibXray.xcframework.zip
 
       - name: Publish to CocoaPods Trunk
         env:
