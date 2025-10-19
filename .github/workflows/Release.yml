@@ -80,3 +80,28 @@ jobs:
           tag_name: ${{ github.event.inputs.version }}
           body: 'Compiled from source tag: ${{ github.event.inputs.tag }}'
           files: xray/LibXray.xcframework.zip
+
+      - name: Generate Podspec
+        run: |
+          cat > LibXray.podspec <<EOF
+          Pod::Spec.new do |s|
+            s.name             = 'LibXray'
+            s.version          = '${{ github.event.inputs.version }}'
+            s.summary          = 'Prebuilt binary framework for XTLS/libXray'
+            s.homepage         = 'https://github.com/EbrahimTahernejad/LibXrayApple'
+            s.license          = { :type => 'MIT', :file => 'LICENSE' }
+            s.author           = { 'Ebrahim Tahernejad' => 'ebrahimtahernejad@gmail.com' }
+            s.source           = { :http => "https://github.com/EbrahimTahernejad/LibXrayApple/releases/download/${{ github.event.inputs.version }}/LibXray.xcframework.zip" }
+            s.vendored_frameworks = 'LibXray.xcframework'
+            s.platform         = :ios, '15.0'
+            s.requires_arc     = true
+          end
+          EOF
+
+      - name: Validate Podspec
+        run: pod spec lint LibXray.podspec --allow-warnings --verbose
+
+      - name: Publish to CocoaPods Trunk
+        env:
+          COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
+        run: pod trunk push LibXray.podspec --allow-warnings
