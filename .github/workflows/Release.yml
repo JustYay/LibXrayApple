@@ -79,6 +79,7 @@ jobs:
             s.vendored_frameworks = 'LibXray.xcframework'
             s.platform         = :ios, '15.0'
             s.requires_arc     = true
+            s.static_framework = true
           end
           EOF
           
