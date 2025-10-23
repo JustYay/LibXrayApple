@@ -90,7 +90,9 @@ jobs:
           commit_user_name: Ebrahim
           commit_user_email: ebrahimtahernejad@gmail.com
           tagging_message: ${{ github.event.inputs.version }}
-          file_pattern: 'Package.swift'
+          file_pattern: |
+            'Package.swift'
+            'LibXray.podspec'
           
       - name: Upload Release
         uses: softprops/action-gh-release@v1
