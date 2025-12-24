@@ -67,9 +67,9 @@ jobs:
 
       - name: Generate Podspec
         run: |
-          cat > LibXray.podspec <<EOF
+          cat > LibXrayJY.podspec <<EOF
           Pod::Spec.new do |s|
-            s.name             = 'LibXray'
+            s.name             = 'LibXrayJY'
             s.version          = '${{ github.event.inputs.version }}'
             s.summary          = 'Prebuilt binary framework for XTLS/libXray'
             s.homepage         = 'https://github.com/JustYay/LibXrayApple'
@@ -90,7 +90,7 @@ jobs:
           commit_user_name: JustYay
           commit_user_email: ustinboris831@gmail.com
           tagging_message: ${{ github.event.inputs.version }}
-          file_pattern: 'Package.swift LibXray.podspec'
+          file_pattern: 'Package.swift LibXrayJY.podspec'
           
       - name: Upload Release
         uses: softprops/action-gh-release@v1
@@ -101,9 +101,9 @@ jobs:
           files: xray/LibXray.xcframework.zip
 
       - name: Validate Podspec
-        run: pod spec lint LibXray.podspec --allow-warnings --verbose
+        run: pod spec lint LibXrayJY.podspec --allow-warnings --verbose
 
       - name: Publish to CocoaPods Trunk
         env:
           COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
-        run: pod trunk push LibXray.podspec --allow-warnings
+        run: pod trunk push LibXrayJY.podspec --allow-warnings
